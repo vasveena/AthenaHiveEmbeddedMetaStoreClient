@@ -1,0 +1,2 @@
+Bundle-SymbolicName: org.datanucleus;singleton:=true
+Premain-Class: org.datanucleus.enhancer.DataNucleusClassFileTransformer
