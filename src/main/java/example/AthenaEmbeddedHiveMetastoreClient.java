@@ -80,16 +80,17 @@ public class AthenaEmbeddedHiveMetastoreClient {
             HiveMetaStoreClient hiveClient = new HiveMetaStoreClient(hiveConf);
             long end = System.currentTimeMillis();
             float sec = (end - start) / 1000F; System.out.println("Time taken to initiate Hive client: "+ sec +" seconds");
-            String dbName = "testHiveDb";
-            String tableName = "testHiveTbl";
-            System.out.println("Creating database");
+            String dbName = "testdb";
+            String tableName = "order_events_prc_orc_6";
+            /*System.out.println("Creating database");
             createTestDatabase(hiveClient, dbName);
             System.out.println("Creating table");
             createTestTable(hiveClient, dbName, tableName);
             System.out.println("Adding Partitions");
             createPartitions(hiveClient);
             System.out.println("Listing all DBs and tables");
-            listAllTablesAndDBs(hiveClient);
+            listAllTablesAndDBs(hiveClient);*/
+	    getPartitions(hiveClient, dbName, tableName);
             hiveClient.close();
         }
         catch (Exception e)
@@ -99,6 +100,24 @@ public class AthenaEmbeddedHiveMetastoreClient {
         }
 
        return arg;
+    }
+    public static void getPartitions(HiveMetaStoreClient hiveClient, String dbName, String tblName)
+    {
+         System.out.println("Creating Embedded Hive Client");
+         long start = System.currentTimeMillis();
+         
+         try {
+         List<Partition> partList = hiveClient.listPartitions(dbName, tblName, (short)-1);
+         System.out.println("Partition Size " +partList.size());
+         }
+	 catch (Exception e)
+        {
+            System.out.println("error in getPartitions");
+            e.printStackTrace();
+        }
+
+	 long end = System.currentTimeMillis();
+	 float sec = (end - start) / 1000F; System.out.println("Time taken to listPartitions: "+ sec +" seconds");
     }
     public static void listAllTablesAndDBs(HiveMetaStoreClient hiveClient)
     {
